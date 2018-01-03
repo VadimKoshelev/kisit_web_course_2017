@@ -1,34 +1,81 @@
-var prodcuts = [{
+var products = [{
 	name : "test",
 	price : 12.9,
 	inventory : 20
 }, {
 	name : "test2",
 	price : 30,
-	inventory : 80
+	inventory : 80,
 }];
 
 class ProductLineItem {
-	constructor(product) {
-		//implement
+	constructor(product) {		 
+		this.name = product.name;
+		this.quantity = 1;	
+		this.price = product.price * this.quantity;
+		this.inventory = product.inventory;
+		}
+
+	get getName(){
+		return this.name;
+	}
+
+	get getPrice(){
+		return this.price;
+	}
+
+	get getInventory(){
+		return this.inventory;
+	}
+
+	get getQuantity(){
+		return this.quantity;
+	}
+
+	setQuantity(newQ){
+		this.price /= this.quantity;
+		this.quantity = newQ;
+		this.price *= this.quantity;
 	}
 }
 
-
 var basket = (function(){
+	var arrOfProducts = [];
 	//implement
 	return {
 		addProduct : function(productID){
-			//implement
+			var mr = false;
+			if(arrOfProducts.length != 0 ){
+				for(var i = 0; i<arrOfProducts.length; i++){
+					if(arrOfProducts[i].getName == products[productID].name){
+						mr = true;											
+					}										
+				}
+				if(mr) console.log("You already have this item!")
+				else arrOfProducts[productID] = new ProductLineItem(products[productID]);
+			} else arrOfProducts[0] = new ProductLineItem(products[productID]);
 		},
+
 		removeProduct : function(productID){
-			//implement
+			arrOfProducts.splice(productID,1);
 		},
+
 		updateProductQuantity : function(productID, quantity) {
-			//implement
+			if(arrOfProducts.length != 0 ){
+				for(var i = 0; i<arrOfProducts.length; i++){
+					if(arrOfProducts[i].getName == products[productID].name){
+						arrOfProducts[i].setQuantity(quantity);
+					}										
+				}			
+			} else console.log("There`s no items!");
 		},
+		
 		getTotalPrice : function(){
-			//implement
+			var totalPrice = 0;
+			for (var i=0; i<arrOfProducts.length; i++){
+				totalPrice += arrOfProducts[i].getPrice;
+			}
+			return totalPrice;
 		}
 	}
 })();
